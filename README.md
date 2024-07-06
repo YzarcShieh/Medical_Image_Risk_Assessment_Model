@@ -6,7 +6,7 @@ This project aims to provide a comprehensive approach to medical image classific
 Users should prepare their dataset in a structured format:
 - Create a CSV file containing image paths and their corresponding labels.
 - Include the following columns in the CSV:
-  - `imagename`: Path to each image file.
+  - `image_file_name`: Path to each image file.
   - `label`: Numerical label indicating the risk category associated with each image.
 
 Ensure that images are preprocessed and stored in a directory.
