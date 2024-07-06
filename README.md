@@ -33,7 +33,7 @@ To use this repository for the Medical Image Risk Assessment Model, follow these
 
 1. Clone the repository using the following git command:
    
-git clone https://github.com/yjhuang1119/Risk-assessment-model.git
+git clone https://github.com/yjhuang1119/Medical_Image_Risk_Assessment_Model.git
 
 Alternatively, download the source files from the GitHub website.
 
