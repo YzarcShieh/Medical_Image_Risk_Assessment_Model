@@ -61,7 +61,7 @@ To use this repository for the Medical Image Risk Assessment Model, follow these
   - `TrainResult.csv`: CSV file containing training loss and validation AUC for each epoch.
   - `TrainResult.tiff`: Plot of training loss and validation AUC.
 
-  Feature Maps:
+  Feature Maps:<br>
   Extracted feature maps for training, validation, and test data in CSV format.
 
   Evaluation Results:
