@@ -21,7 +21,7 @@ train_data_densenet, train_data_xgb = train_test_split(
 # Define model parameters for DenseNet and XGBoost
 model_params_densenet = {
     'max_epochs': 5,
-    'batch_size': 4,
+    'batch_size': 64,
     'learning_rate': 1e-5
 }
 
