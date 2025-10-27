@@ -1,6 +1,6 @@
 # Medical Image Risk Assessment
 
-This project aims to provide a comprehensive approach to medical image classification and risk assessment using a combination of DenseNet121 and XGBoost. The pipeline includes training, feature extraction, and evaluation steps to achieve optimal model performance.
+This project aims to provide a comprehensive approach to medical image classification and risk assessment using a combination of DenseNet121, XGBoost and TabPFN. The pipeline includes training, feature extraction, and evaluation steps to achieve optimal model performance.
 
 ## Input Data Format
 Users should prepare their dataset in a structured format:
@@ -25,6 +25,15 @@ Ensure that images are preprocessed and stored in a directory.
 - `scale_pos_weight`: Control the balance of positive and negative weights. Default is 1.
 - `eta`: Learning rate. Default is 0.3.
 
+### TabPFN Parameters :
+
+- `n_ensembles`: Number of ensemble configurations used by TabPFN (e.g., 8; reduce to 4 on small GPUs).
+- `device`: `auto` (use GPU if available, else CPU), or explicitly `cuda` / `cpu`.
+- `fit_mode`:`low_memory` (use if your GPU/RAM is limited, you often hit OOM, or you prioritize stability).
+- `memory_saving_mode`: `auto` (use if you’re unsure about manual tuning and want automatic memory-saving behavior).
+- `ignore_pretraining_limits`: `True`  (use if your dataset exceeds default limits, you’re training on CPU, or you want to bypass conservative safeguards to complete training).
+
+
 Users can adjust these parameters to optimize model performance based on their dataset characteristics.
 
 ## Usage
@@ -33,20 +42,25 @@ To use this repository for the Medical Image Risk Assessment Model, follow these
 
 1. Clone the repository using the following git command:
    
-  git clone https://github.com/yjhuang1119/Medical_Image_Risk_Assessment_Model.git
+  git clone https://github.com/yjhuang1119/Medical_Image_Risk_Assessment_Model.git #改
 
 2. Ensure Python is installed on your machine.
 
 3. Install required Python libraries by running:
+  if you have CUDA
   ```
-  pip install -r requirements.txt
+  pip install -r requirements_gpu.txt
+  ```
+  if you have CPU
+  ```
+  pip install -r requirements_cpu.txt
   ```
 
 4. **Run the Example Directly:**
   You can run an example directly in `example_usage.py`.
   Optionally, modify the parameters:
   - `model_params_densenet`: Dictionary containing DenseNet121 model parameters (optional).
-  - `model_params_xgb`: Dictionary containing XGBoost model parameters (optional).
+  - `model_params_xgb`: Dictionary containing XGBoost model parameters (optional). The pipeline will train DenseNet, then XGBoost, and finally TabPFN on the same feature maps.
 
 5. **Use Your Own Data:**
   Prepare your dataset:
@@ -64,16 +78,25 @@ To use this repository for the Medical Image Risk Assessment Model, follow these
   Feature Maps:<br>
   Extracted feature maps for training, validation, and test data in CSV format.
 
+  ### Evaluation Results (XGBoost):
   Evaluation Results:
   - `evaluation_results.csv`: CSV file containing AUC, accuracy, sensitivity, specificity, and F1 score.
   - `confusion_matrix.png`: Plot of the confusion matrix.
+
+  ### Evaluation Results (TabPFN):
+  - `evaluation_results_tabpfn_test.csv`: CSV with AUC, accuracy, precision, recall, and F1 on the test set.
+
+  - `confusion_matrix_tabpfn_test.png`: Confusion matrix for TabPFN predictions on the test set.
+
+  - `tabpfn_model.pkl`: Serialized TabPFN model.
 
 ## File Summary
   - `train_densenet121.py`: Trains the DenseNet121 model on the provided training data and saves the best model based on validation AUC.
   - `extract_densenet121_featuremap.py`: Extracts feature maps from the DenseNet121 model for further processing with XGBoost.
   - `train_xgboost.py`: Trains an XGBoost model on the extracted DenseNet121 feature maps and validates it.
   - `evaluate_model.py`: Evaluates the trained XGBoost model using various performance metrics and plots the confusion matrix.
-  - `main.py`: Main function to orchestrate the training, feature extraction, and evaluation steps.
+  - `train_tabpfn.py`: Trains a TabPFN classifier on the same feature maps (low-memory options included).
+  - `main.py`: Main function to orchestrate the training, feature extraction, and evaluation steps. (Runs DenseNet → XGBoost → TabPFN.)
   - `example_usage.py`: Example script demonstrating how to use the provided functions with a dataset.
   - `README.md`: This file provides project information and instructions.
 
